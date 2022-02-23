@@ -3,14 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 
-
 db = SQLAlchemy()
-db_name = "database.db"
+DB_Name = "database.db"
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'Uidnzekof'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:/// {db_name} '
+    app.config['SECRET_KEY'] = 'jfziejzf'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:/// {DB_Name} '
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
@@ -18,10 +17,10 @@ def create_app():
     from .views import views
     from .auth import auth
 
-    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(views, url_prefix='/') # tell flask about our bluprints
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note
+    from .models import User
 
     create_database(app)
 
@@ -31,11 +30,11 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return User.query.get(int(id))  # using get to look for the primary key
 
     return app
 
 def create_database(app):
-    if not path.exists('website/' + db_name):
-        db.create_all(app = app)
+    if not path.exists('website/' + DB_Name):
+        db.create_all(app=app)
         print('created database')
