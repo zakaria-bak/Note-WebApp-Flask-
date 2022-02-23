@@ -1,16 +1,13 @@
 from flask import Blueprint, render_template, request, flash
-from flask.helpers import url_for
-from werkzeug.utils import redirect
-from .models import Note, User
 from flask_login import login_required, current_user
+from werkzeug.utils import redirect
+from .models import  Note
 from . import db
-
 
 views = Blueprint('views', __name__)
 
 @views.route("/", methods=["POST", "GET"])
 def home():
-    flash('To add a Note login required', category='message')
     if request.method == 'POST':
         note = request.form["note"]
 
@@ -34,8 +31,4 @@ def delete(id):
         return redirect('/')
     
     
-
-@views.route("/database")
-def view():
-    return render_template("view_database.html", values=User.query.all())
 
