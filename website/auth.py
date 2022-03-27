@@ -50,7 +50,6 @@ def sign_up():
             new_user = User(email=email, firstName=firstName, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
-            login_user(user, remember=True)
             flash('account created!!', category='success')
             return redirect(url_for('views.home'))
             
